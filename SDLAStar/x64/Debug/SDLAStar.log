@@ -1,0 +1,4 @@
+﻿  Game.cpp
+c:\users\gameuser\documents\github\games-engineering\project - a star\game\sdlastar\game.cpp(75): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  SDLAStar.vcxproj -> C:\Users\gameuser\Documents\GitHub\Games-Engineering\Project - A star\Game\x64\Debug\SDLAStar.exe
+  SDLAStar.vcxproj -> C:\Users\gameuser\Documents\GitHub\Games-Engineering\Project - A star\Game\x64\Debug\SDLAStar.pdb (Full PDB)
