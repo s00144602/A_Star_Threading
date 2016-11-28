@@ -1,102 +1,101 @@
 #include "stdafx.h"
-
 #include <iostream>
-using namespace std;
-
-
-
 #include "LTimer.h"
 #include "Game.h"
 
-
-const int SCREEN_FPS = 100;
+const int SCREEN_FPS = 160;
 const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
+using namespace std;
 
-Game::Game()
+Game::Game():
+	m_lastTime(LTimer::gameTime()),
+	m_winSize(1000,500)
 {
-	pause = false;
-	quit = false;
+	m_pause = false;
+	m_quit = false;
 }
-
 
 Game::~Game()
 {
+
 }
 
-
 bool Game::init() {	
-	Size2D winSize(1920,1280);
 
 	//creates our renderer, which looks after drawing and the window
-	renderer.init(winSize,"Simple SDL App");
+	m_renderer.init(m_winSize,"A* Maze implementing Threads");
 
 	//set up the viewport
 	//we want the vp centred on origin and 20 units wide
-	float aspectRatio = winSize.w / winSize.h;
+	float aspectRatio = m_winSize.w / m_winSize.h;
 	float vpWidth = 20;
-	Size2D vpSize(vpWidth, vpWidth /aspectRatio);
-	Point2D vpBottomLeft( -vpSize.w / 2, - vpSize.h / 2);
+	m_vpSize = Size2D(vpWidth, vpWidth /aspectRatio);
+	Point2D vpBottomLeft( -m_vpSize.w / 2, - m_vpSize.h / 2);
+	m_vpRect = Rect(vpBottomLeft,m_vpSize);
+	m_renderer.setViewPort(m_vpRect);
 
-	Rect vpRect(vpBottomLeft,vpSize);
-	renderer.setViewPort(vpRect);
-
+	//Add Scenes
+	SceneManager::Instance()->addScene(new GameScene());
 
 	//create some game objects
 
 
 	//add some game objects
 	
-	lastTime = LTimer::gameTime();
 
 	//inputManager.AddListener(EventListener::Event::EXAMPLE, EventListener);
-
-	inputManager.AddListener(EventListener::Event::QUIT, this);
+	m_inputManager.AddListener(EventListener::Event::UP, this);
+	m_inputManager.AddListener(EventListener::Event::DOWN, this);
+	m_inputManager.AddListener(EventListener::Event::LEFT, this);
+	m_inputManager.AddListener(EventListener::Event::RIGHT, this);
+	m_inputManager.AddListener(EventListener::Event::QUIT, this);
 
 	return true;
 
 }
 
-
 void Game::destroy()
 {
 	//empty out the game object vector before quitting
-	for (std::vector<GameObject*>::iterator i = gameObjects.begin(); i != gameObjects.end(); i++) {
+	for (std::vector<GameObject*>::iterator i = m_gameObjects.begin(); i != m_gameObjects.end(); i++) {
 		delete *i;
 	}
-	gameObjects.clear();
-	renderer.destroy();
+	m_gameObjects.clear();
+	m_renderer.destroy();
 }
 
 //** calls update on all game entities*/
 void Game::update()
 {
 	unsigned int currentTime = LTimer::gameTime();//millis since game started
-	float deltaTime = (currentTime - lastTime) / 1000.0;//time since last update
+	float deltaTime = (currentTime - m_lastTime) / 1000.0;//time since last update
+
+	SceneManager::Instance()->update(deltaTime);
 
 	//call update on all game objects
-	for (std::vector<GameObject*>::iterator i = gameObjects.begin(); i != gameObjects.end(); i++) {
-		(*i)->Update(deltaTime);
-	}
+	//for (std::vector<GameObject*>::iterator i = m_gameObjects.begin(); i != m_gameObjects.end(); i++) {
+	//	(*i)->Update(deltaTime);
+	//}
 
 	//save the curent time for next frame
-	lastTime = currentTime;
+	m_lastTime = currentTime;
 }
 
 //** calls render on all game entities*/
 
 void Game::render()
 {
-	renderer.clear(Colour(0,0,0));// prepare for new frame
+	m_renderer.clear(Colour(255,255,255));// prepare for new frame
 	
+	SceneManager::Instance()->render(m_renderer);
 	//render every object
-	for (std::vector<GameObject*>::iterator i = gameObjects.begin(), e= gameObjects.end(); i != e; i++) {
-		(*i)->Render(renderer);
-	}
-
-	renderer.present();// display the new frame (swap buffers)
-
+	//for (std::vector<GameObject*>::iterator i = m_gameObjects.begin(), e= m_gameObjects.end(); i != e; i++) {
+	//	(*i)->Render(m_renderer);
+	//}
 	
+	m_renderer.present();// display the new frame (swap buffers)
+
 }
 
 /** update and render game entities*/
@@ -105,32 +104,39 @@ void Game::loop()
 	LTimer capTimer;//to cap framerate
 
 	int frameNum = 0;
-	while (!quit) { //game loop
+	while (!m_quit) { //game loop
 		capTimer.start();
 
-		inputManager.ProcessInput();
+		m_inputManager.ProcessInput();
 
-		if(!pause) //in pause mode don't bother updateing
+		if(!m_pause) //in pause mode don't bother updateing
 			update();
 		render();
 
 		int frameTicks = capTimer.getTicks();//time since start of frame
-		if (frameTicks < SCREEN_TICKS_PER_FRAME)
-		{
-			//Wait remaining time before going to next frame
-			SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
-		}
+		//if (frameTicks < SCREEN_TICKS_PER_FRAME)
+		//{
+		//	//Wait remaining time before going to next frame
+		//	SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
+		//}
 	}
 }
 
 void Game::onEvent(EventListener::Event evt) {
 		
 	if (evt == EventListener::Event::QUIT) {
-		quit=true;
+		m_quit=true;
 	}
-
 	if (evt == EventListener::Event::SPACE) {
+		
+	}
+	if (evt == EventListener::Event::UP) {
+		m_renderer.setViewPort(Rect(Point2D(m_vpRect.pos.x,m_vpRect.pos.y+15),m_vpRect.size));
+	}
+	if (evt == EventListener::Event::DOWN) {
 
 	}
+	if (evt == EventListener::Event::LEFT) {
 
+	}
 }

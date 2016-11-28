@@ -11,9 +11,13 @@ public:
 	//add your own events here
 	enum Event {
 		SPACE	,
-		QUIT
+		QUIT,
+		UP,
+		DOWN,
+		LEFT,
+		RIGHT,
+		CHANGESCENE
 	};
-
 
 	virtual void onEvent(Event)=0;
 };

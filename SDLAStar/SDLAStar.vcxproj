@@ -160,21 +160,36 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicTypes.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Cell.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="EventListener.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LTimer.h" />
+    <ClInclude Include="Maze.h" />
+    <ClInclude Include="GameScene.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneId.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SDLAStar.cpp" />
+    <ClCompile Include="A_Star_Threading.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Cell.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LTimer.cpp" />
+    <ClCompile Include="Maze.cpp" />
+    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

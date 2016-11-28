@@ -1,5 +1,5 @@
 #pragma once
-
+#include <iostream>
 
 //Define some basic types needed for 2D graphics
 

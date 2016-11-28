@@ -4,24 +4,21 @@ using namespace std;
 #define SDL_MAIN_HANDLED
 
 #ifdef __APPLE__
-    #include "SDL2/SDL.h"
+#include "SDL2/SDL.h"
 #elif defined(_WIN64) || defined(_WIN32)
-    #include "SDL.h"
+#include "SDL.h"
 #endif
 
 #include "Renderer.h"
 
-
-
-
-Renderer::Renderer():sdl_renderer(NULL)
+Renderer::Renderer() :sdl_renderer(NULL)
 {
-	
+
 }
 
-bool Renderer::init(const Size2D& winSize,const char* title) {
+bool Renderer::init(const Size2D& winSize, const char* title) {
 
-	int e=SDL_Init(SDL_INIT_EVERYTHING);              // Initialize SDL2
+	int e = SDL_Init(SDL_INIT_EVERYTHING);              // Initialize SDL2
 	windowSize = winSize;
 	if (e != 0) {
 		// problem with SDL?...
@@ -31,12 +28,12 @@ bool Renderer::init(const Size2D& winSize,const char* title) {
 
 	// Create an application window with the following settings:
 	window = SDL_CreateWindow(
-		title,                  // window title
-		SDL_WINDOWPOS_UNDEFINED,           // initial x position
-		SDL_WINDOWPOS_UNDEFINED,           // initial y position
-		(int)winSize.w,                              // width, in pixels
-		(int)winSize.h,                               // height, in pixels
-		SDL_WINDOW_OPENGL                  // flags - see below
+		title,								// window title
+		SDL_WINDOWPOS_UNDEFINED,			// initial x position
+		SDL_WINDOWPOS_UNDEFINED,			// initial y position
+		(int)winSize.w,						// width, in pixels
+		(int)winSize.h,						// height, in pixels
+		SDL_WINDOW_OPENGL					// flags - see below
 	);
 
 	// Check that the window was successfully created
@@ -52,7 +49,7 @@ bool Renderer::init(const Size2D& winSize,const char* title) {
 		cout << "Could not create renderer: " << SDL_GetError() << std::endl;
 		return false;
 	}
-	
+
 	return true;
 }
 
@@ -71,7 +68,7 @@ void Renderer::drawRect(const Rect& r, const Colour& c) {
 //draw a rectin world coordinates
 void Renderer::drawWorldRect(const Rect &r, const Colour &c)
 {
-	drawRect(worldToScreen(r),c);
+	drawRect(worldToScreen(r), c);
 }
 
 void Renderer::present() { //swap buffers
@@ -87,9 +84,9 @@ Point2D Renderer::worldToScreen(const Point2D &p)
 {
 	float vpTop = viewportBottomLeft.y + viewportSize.h;
 	float x = (p.x - viewportBottomLeft.x)* windowSize.w / viewportSize.w;
-	float y = (vpTop- p.y)* windowSize.h / viewportSize.h;
-	
-	return Point2D(x,y);
+	float y = (vpTop - p.y)* windowSize.h / viewportSize.h;
+
+	return Point2D(x, y);
 }
 Rect Renderer::worldToScreen(const Rect &r)
 {
@@ -97,14 +94,14 @@ Rect Renderer::worldToScreen(const Rect &r)
 	float sw = r.size.w*(windowSize.w / viewportSize.w);
 	float sh = -r.size.h*(windowSize.h / viewportSize.h);
 
-	return Rect(p,Size2D(sw,sh));
-}
-void Renderer::setViewPort(const Rect &r)
-{
-	viewportBottomLeft = r.pos;
-	viewportSize=r.size;
+	return Rect(p, Size2D(sw, sh));
 }
 
+void Renderer::setViewPort(Rect &r)
+{
+	viewportBottomLeft = r.pos;
+	viewportSize = r.size;
+}
 
 /**Destroys SDL_Window and SDL_Renderer*/
 void Renderer::destroy() {

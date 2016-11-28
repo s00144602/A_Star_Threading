@@ -1,4 +1,6 @@
-﻿  Game.cpp
-c:\users\gameuser\documents\github\games-engineering\project - a star\game\sdlastar\game.cpp(75): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  SDLAStar.vcxproj -> C:\Users\gameuser\Documents\GitHub\Games-Engineering\Project - A star\Game\x64\Debug\SDLAStar.exe
-  SDLAStar.vcxproj -> C:\Users\gameuser\Documents\GitHub\Games-Engineering\Project - A star\Game\x64\Debug\SDLAStar.pdb (Full PDB)
+﻿  Maze.cpp
+c:\users\shauna\documents\github\a_star_threading\sdlastar\cell.h(35): warning C4244: 'return': conversion from 'const float' to 'int', possible loss of data
+c:\users\shauna\documents\github\a_star_threading\sdlastar\cell.h(36): warning C4244: 'return': conversion from 'const float' to 'int', possible loss of data
+c:\users\shauna\documents\github\a_star_threading\sdlastar\cell.h(37): warning C4244: 'return': conversion from 'const float' to 'int', possible loss of data
+  SDLAStar.vcxproj -> C:\Users\Shauna\Documents\GitHub\A_Star_Threading\x64\Debug\SDLAStar.exe
+  SDLAStar.vcxproj -> C:\Users\Shauna\Documents\GitHub\A_Star_Threading\x64\Debug\SDLAStar.pdb (Full PDB)

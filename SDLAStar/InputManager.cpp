@@ -24,15 +24,13 @@ void InputManager::AddListener(EventListener::Event evt,EventListener *listener)
 //Send the events to interested objects
 void InputManager::Dispatch(EventListener::Event evt)
 {
-
 	if (listeners.find(evt) != listeners.end()) {
 		
 		for (auto const &listener : *listeners[evt]) { //go through all listeners for this event
 			listener->onEvent(evt); //Call on event for the listener
 
 		}
-	}
-	
+	}	
 }
 
 
@@ -50,6 +48,18 @@ void InputManager::ProcessInput()
 				{
 					case SDLK_SPACE:
 						Dispatch(EventListener::Event::SPACE);
+						break;
+					case SDLK_UP:
+						Dispatch(EventListener::Event::UP);
+						break;
+					case SDLK_DOWN:
+						Dispatch(EventListener::Event::DOWN);
+						break;
+					case SDLK_LEFT:
+						Dispatch(EventListener::Event::LEFT);
+						break;
+					case SDLK_RIGHT:
+						Dispatch(EventListener::Event::RIGHT);
 						break;
 				}
 				break;

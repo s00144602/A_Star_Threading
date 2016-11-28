@@ -6,7 +6,6 @@
 #include "SDL.h"
 #endif
 
-
 #include "BasicTypes.h"
 
 
@@ -20,8 +19,6 @@ class Renderer{
 	//change these if you want to zoom or pan
 	Point2D viewportBottomLeft;
 	Size2D viewportSize;
-
-
 	SDL_Window *window;
 	SDL_Renderer *sdl_renderer;
 
@@ -34,9 +31,7 @@ public:
 	void clear(const Colour&);
 	Point2D worldToScreen(const Point2D&);
 	Rect worldToScreen(const Rect&);
-
-	void setViewPort(const Rect&);
-
+	void setViewPort(Rect&);
 	void destroy();
 	~Renderer();
 };
