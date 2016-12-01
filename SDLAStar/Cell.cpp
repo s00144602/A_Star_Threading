@@ -7,7 +7,7 @@
 
 Cell::Cell(int x, int y, int size) :size(size), x(x), y(y), walls{ 0, 0, 0, 0 }, searchVisitId(0)
 {
-	//neighbors = { nullptr, nullptr, nullptr, nullptr };
+	neighbors = { nullptr, nullptr, nullptr, nullptr };
 	wallSize = 2;
 }
 
@@ -22,6 +22,8 @@ void Cell::renderSelected(SDL_Renderer *renderer, SDL_Rect *mazeRect) const
 	drawCircle(renderer, mazeRect);
 }
 
+
+//TODO:refactor .. must be better way to accomplish this
 void Cell::render(Renderer& renderer) const
 {
 	Rect rects[4] = {};
@@ -66,7 +68,7 @@ void Cell::render(Renderer& renderer) const
 			continue; 
 		}
 		Rect drawRect = Rect(Point2D(rects[i].pos.x - Camera::Instance()->getPosition().x, rects[i].pos.y - Camera::Instance()->getPosition().y), rects[i].size);
-		renderer.drawRect(drawRect, Colour(rand() % (int)(255 + 1), rand() % (int)(255 + 1), 0, 255));
+		renderer.drawRect(drawRect, Colour(0, 0, 0, 255));
 	}
 }
 

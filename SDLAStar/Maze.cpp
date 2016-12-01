@@ -14,8 +14,12 @@ Maze::Maze(unsigned int size, unsigned int cellSize) :
 	initialiseSpecialWalls();
 }
 
+//TODO:REfactor- must be a better way
 void Maze::initialiseSpecialWalls()
 {
+	//3
+	//(3*2) = 6
+	//(3*2)+(6*2) = 18
 	//2 detached
 	detachedwalls.push_back(m_numOfCells / 2);
 	detachedwalls.push_back(m_numOfCells / 3);
@@ -62,10 +66,10 @@ void Maze::createGrid()
 		for (unsigned int x = m_cellSize; x < m_size; x += m_cellSize) {
 			Cell *currentCell = new Cell(x, y, m_cellSize);
 			//TODO.. need to add back in the walls for the maze
-			//m_cells[pt]->addWall(Cell::TOP);
-			//m_cells[pt]->addWall(Cell::BOTTOM);
-			//m_cells[pt]->addWall(Cell::LEFT);
-			//m_cells[pt]->addWall(Cell::RIGHT);
+			currentCell->addWall(Cell::TOP);
+			currentCell->addWall(Cell::BOTTOM);
+			currentCell->addWall(Cell::LEFT);
+			currentCell->addWall(Cell::RIGHT);
 			if (previousCell != nullptr) {
 				// connect the two cells on the side.
 				previousCell->addNeighbor(currentCell, Cell::RIGHT);
@@ -95,7 +99,7 @@ Cell *Maze::firstCell()
 	return m_cells.at(Point(1, 1));
 }
 
-//TODO: refactor .. could be done simpler
+//Creates a simple level with desired number of attached and detached walls
 bool Maze::createLevel()
 {
 	m_cells = {};
@@ -107,12 +111,6 @@ bool Maze::createLevel()
 		{
 			Point pt = Point(x / m_cellSize, y / m_cellSize);
 			m_cells[pt] = new Cell(x, y, m_cellSize);
-
-			//DELETME: used for debuging
-			//m_cells[pt]->addWall(Cell::TOP);
-			//m_cells[pt]->addWall(Cell::BOTTOM);
-			//m_cells[pt]->addWall(Cell::LEFT);
-			//m_cells[pt]->addWall(Cell::RIGHT);
 
 			//add border
 			if (y == 0)

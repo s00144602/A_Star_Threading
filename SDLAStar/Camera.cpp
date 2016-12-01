@@ -24,7 +24,7 @@ void Camera::onEvent(EventListener::Event evt)
 	switch (evt) {
 		//TODO: Change to maze size restriction
 	case EventListener::Event::UP:
-		if (m_position.y > 10)
+		if (m_position.y > -11)
 			setPosition(Point2D(m_position.x, m_position.y - 11));
 		break;
 	case EventListener::Event::DOWN:
@@ -32,7 +32,7 @@ void Camera::onEvent(EventListener::Event evt)
 		setPosition(Point2D(m_position.x, m_position.y + 11));
 		break;
 	case EventListener::Event::LEFT:
-		if (m_position.x > 10)
+		if (m_position.x > -11)
 		setPosition(Point2D(m_position.x - 11, m_position.y));
 		break;
 	case EventListener::Event::RIGHT:
@@ -58,6 +58,7 @@ const Point2D Camera::getPosition() const
 
 Camera::Camera()
 {
+	setPosition(Point2D(-11, -11));
 }
 
 
