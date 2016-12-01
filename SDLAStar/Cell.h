@@ -2,6 +2,7 @@
 #define _MAZE_CELL_H
 #include <vector>
 #include "Renderer.h"
+#include "Camera.h"
 
 class Cell
 {
@@ -31,6 +32,10 @@ public:
 	std::vector<Cell *> getUnVisitedNeighbors(unsigned int searchId) const;
 	std::vector<Cell *> getUnVisitedAttachedNeighbors(unsigned int searchId) const;
 	void removeWall(const Cell *neighbor);
+
+	void removeAllWalls();
+	void addWall(int direction);
+	void removeWall(int direction);
 
 	int getX() const { return x; }
 	int getY() const { return y; }

@@ -7,7 +7,7 @@
 #endif
 
 #include "BasicTypes.h"
-
+#include <string>
 
 //Responsible for all drawing operations
 //abstracts away specfic SDL specific drawing functions
@@ -24,9 +24,11 @@ class Renderer{
 
 public:
 	Renderer();
+
 	bool init(const Size2D&, const char*);
 	void drawRect(const Rect&, const Colour&);
 	void drawWorldRect(const Rect&, const Colour&);
+	void drawText(std::string font, std::string message);
 	void present();
 	void clear(const Colour&);
 	Point2D worldToScreen(const Point2D&);

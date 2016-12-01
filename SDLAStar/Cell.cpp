@@ -2,15 +2,12 @@
 #include "Cell.h"
 #include "SDL.h"
 #include "SDL_render.h"
+#include "Constants.h"
 
 
-Cell::Cell(int x, int y, int size) : x(x), y(y), size(size), walls{ 1, 1, 1, 1 }, searchVisitId(0)
+Cell::Cell(int x, int y, int size) :size(size), x(x), y(y), walls{ 0, 0, 0, 0 }, searchVisitId(0)
 {
-	red = (Uint8)(rand() % 150);
-	green = (Uint8)(rand() % 150);
-	blue = (Uint8)(rand() % 150);
-	alpha = (Uint8)255;
-	neighbors = { nullptr, nullptr, nullptr, nullptr };
+	//neighbors = { nullptr, nullptr, nullptr, nullptr };
 	wallSize = 2;
 }
 
@@ -62,7 +59,14 @@ void Cell::render(Renderer& renderer) const
 	}
 	for (size_t i = 0; i < rectCount; i++)
 	{
-		renderer.drawRect(rects[i], Colour(0, 0, 0, 255));
+		// if outside the viewable area then skip the tile ie Don't draw
+		if ((rects[i].pos.x - Camera::Instance()->getPosition().x) < -size
+			|| (rects[i].pos.x - Camera::Instance()->getPosition().x) > Constants::WIN_WIDTH)
+		{ 
+			continue; 
+		}
+		Rect drawRect = Rect(Point2D(rects[i].pos.x - Camera::Instance()->getPosition().x, rects[i].pos.y - Camera::Instance()->getPosition().y), rects[i].size);
+		renderer.drawRect(drawRect, Colour(rand() % (int)(255 + 1), rand() % (int)(255 + 1), 0, 255));
 	}
 }
 
@@ -116,6 +120,24 @@ void Cell::removeWall(const Cell *neighbor)
 		walls[i] = 0;
 		break;
 	}
+}
+
+void Cell::removeAllWalls()
+{
+	walls[0] = 0;
+	walls[1] = 0;
+	walls[2] = 0;
+	walls[3] = 0;
+}
+
+void Cell::addWall(int direction)
+{
+	walls[direction] = 1;
+}
+
+void Cell::removeWall(int direction)
+{
+	walls[direction] = 0;
 }
 
 Cell *Cell::getAttachedNeighbor(unsigned int direction) const

@@ -7,6 +7,7 @@
 #include "Maze.h"
 #include "Scene.h"
 #include "GameScene.h"
+#include "SmallScene.h"
 
 /** The game objct whic manages the game loop*/
 class Game:public EventListener
@@ -18,7 +19,6 @@ public:
 	Rect m_vpRect;
 	Size2D m_vpSize;
 	Size2D m_winSize;
-
 
 	bool init();
 	void destroy();

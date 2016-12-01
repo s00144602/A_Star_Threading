@@ -1,6 +1,3 @@
-﻿  Maze.cpp
-c:\users\shauna\documents\github\a_star_threading\sdlastar\cell.h(35): warning C4244: 'return': conversion from 'const float' to 'int', possible loss of data
-c:\users\shauna\documents\github\a_star_threading\sdlastar\cell.h(36): warning C4244: 'return': conversion from 'const float' to 'int', possible loss of data
-c:\users\shauna\documents\github\a_star_threading\sdlastar\cell.h(37): warning C4244: 'return': conversion from 'const float' to 'int', possible loss of data
+﻿  Renderer.cpp
   SDLAStar.vcxproj -> C:\Users\Shauna\Documents\GitHub\A_Star_Threading\x64\Debug\SDLAStar.exe
   SDLAStar.vcxproj -> C:\Users\Shauna\Documents\GitHub\A_Star_Threading\x64\Debug\SDLAStar.pdb (Full PDB)

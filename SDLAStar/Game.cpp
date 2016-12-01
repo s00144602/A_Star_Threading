@@ -1,16 +1,20 @@
 #include "stdafx.h"
 #include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string>
+#include <vector>
+#include <time.h>
+#include "SDL_ttf.h"
 #include "LTimer.h"
 #include "Game.h"
-
-const int SCREEN_FPS = 160;
-const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
-
+#include "Constants.h"
+#include "Camera.h"
 using namespace std;
 
 Game::Game():
 	m_lastTime(LTimer::gameTime()),
-	m_winSize(1000,500)
+	m_winSize(Constants::WIN_WIDTH, Constants::WIN_HEIGHT)
 {
 	m_pause = false;
 	m_quit = false;
@@ -34,8 +38,8 @@ bool Game::init() {
 	Point2D vpBottomLeft( -m_vpSize.w / 2, - m_vpSize.h / 2);
 	m_vpRect = Rect(vpBottomLeft,m_vpSize);
 	m_renderer.setViewPort(m_vpRect);
-
 	//Add Scenes
+	SceneManager::Instance()->addScene(new SmallScene());
 	SceneManager::Instance()->addScene(new GameScene());
 
 	//create some game objects
@@ -63,6 +67,7 @@ void Game::destroy()
 	}
 	m_gameObjects.clear();
 	m_renderer.destroy();
+	
 }
 
 //** calls update on all game entities*/
@@ -70,7 +75,6 @@ void Game::update()
 {
 	unsigned int currentTime = LTimer::gameTime();//millis since game started
 	float deltaTime = (currentTime - m_lastTime) / 1000.0;//time since last update
-
 	SceneManager::Instance()->update(deltaTime);
 
 	//call update on all game objects
@@ -94,6 +98,7 @@ void Game::render()
 	//	(*i)->Render(m_renderer);
 	//}
 	
+
 	m_renderer.present();// display the new frame (swap buffers)
 
 }
@@ -131,12 +136,20 @@ void Game::onEvent(EventListener::Event evt) {
 		
 	}
 	if (evt == EventListener::Event::UP) {
-		m_renderer.setViewPort(Rect(Point2D(m_vpRect.pos.x,m_vpRect.pos.y+15),m_vpRect.size));
+		Camera::Instance()->onEvent(UP);
 	}
 	if (evt == EventListener::Event::DOWN) {
-
+		Camera::Instance()->onEvent(DOWN);
 	}
 	if (evt == EventListener::Event::LEFT) {
-
+		Camera::Instance()->onEvent(LEFT);
 	}
+	if (evt == EventListener::Event::RIGHT) {
+		Camera::Instance()->onEvent(RIGHT);
+	}
+}
+
+static void RenderThread(void *ptr)
+{
+
 }

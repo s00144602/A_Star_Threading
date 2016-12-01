@@ -2,7 +2,7 @@
 #include "GameScene.h"
 
 GameScene::GameScene():
-	m_maze(1000,1000,10)
+	m_maze(300,10)
 {
 	bool m_keyDown;
 }

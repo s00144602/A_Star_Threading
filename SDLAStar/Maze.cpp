@@ -1,14 +1,53 @@
 #include "stdafx.h"
 #include "Maze.h"
 #include <stack>
+#include <vector>
 #include "Renderer.h"
+#include <omp.h>
 
-Maze::Maze(unsigned int sizeX, unsigned int sizeY, unsigned int cellSize): 
-	m_sizeX(sizeX),
-	m_sizeY(sizeY), 
-	m_cellSize(cellSize), 
+Maze::Maze(unsigned int size, unsigned int cellSize) :
+	m_size(size),
 	m_searchId(1)
 {
+	Maze::m_cellSize = cellSize;
+	m_numOfCells = m_size / m_cellSize;
+	initialiseSpecialWalls();
+}
+
+void Maze::initialiseSpecialWalls()
+{
+	//2 detached
+	detachedwalls.push_back(m_numOfCells / 2);
+	detachedwalls.push_back(m_numOfCells / 3);
+	//1 attached
+	attachedwalls.push_back(m_numOfCells* 3 / 5);
+	if (m_numOfCells <= 100)
+	{
+		//`+2 detached = 4
+		detachedwalls.push_back(m_numOfCells / 10);
+		detachedwalls.push_back(m_numOfCells * 3/ 4);
+		//1 attached = 2
+		attachedwalls.push_back(m_numOfCells *2 / 5);
+	}
+	if (m_numOfCells > 100)
+	{
+		//+10 = 14
+		detachedwalls.push_back(m_numOfCells / 20);
+		detachedwalls.push_back(m_numOfCells * 3/ 20);
+		detachedwalls.push_back(m_numOfCells / 5);
+		attachedwalls.push_back(m_numOfCells * 3 / 10);
+		detachedwalls.push_back(m_numOfCells *7/ 20);
+		detachedwalls.push_back(m_numOfCells *9/ 20);
+		detachedwalls.push_back(m_numOfCells *11/20);
+		detachedwalls.push_back(m_numOfCells * 3 / 5);
+		detachedwalls.push_back(m_numOfCells * 13 / 20);
+		detachedwalls.push_back(m_numOfCells * 7 / 10);
+		attachedwalls.push_back(m_numOfCells * 8 / 10);
+		detachedwalls.push_back(m_numOfCells * 17 / 20);
+		detachedwalls.push_back(m_numOfCells * 9 / 10);
+		detachedwalls.push_back(m_numOfCells * 19 / 20);
+		//+2 = 4
+	}
 }
 
 void Maze::createGrid()
@@ -17,10 +56,16 @@ void Maze::createGrid()
 	std::vector<Cell *> currentRow = {};
 	std::vector<Cell *> previousRow = {};
 	// reverse x and y loop order so we can preserve previous row. (could have done previous column as well.)
-	for (unsigned int y = m_cellSize; y < m_sizeY - m_cellSize; y += m_cellSize) {
+#pragma omp parallel for
+	for (unsigned int y = m_cellSize; y < m_size; y += m_cellSize) {
 		Cell *previousCell = nullptr;
-		for (unsigned int x = m_cellSize; x < m_sizeX - m_cellSize; x += m_cellSize) {
+		for (unsigned int x = m_cellSize; x < m_size; x += m_cellSize) {
 			Cell *currentCell = new Cell(x, y, m_cellSize);
+			//TODO.. need to add back in the walls for the maze
+			//m_cells[pt]->addWall(Cell::TOP);
+			//m_cells[pt]->addWall(Cell::BOTTOM);
+			//m_cells[pt]->addWall(Cell::LEFT);
+			//m_cells[pt]->addWall(Cell::RIGHT);
 			if (previousCell != nullptr) {
 				// connect the two cells on the side.
 				previousCell->addNeighbor(currentCell, Cell::RIGHT);
@@ -29,6 +74,7 @@ void Maze::createGrid()
 			currentRow.push_back(currentCell);
 			m_cells[Point(x / m_cellSize, y / m_cellSize)] = currentCell;
 			previousCell = currentCell;
+
 		}
 		for (unsigned int i = 0; i < previousRow.size(); i++) {
 			// connect the two cells top and bottom.
@@ -47,6 +93,60 @@ void Maze::createGrid()
 Cell *Maze::firstCell()
 {
 	return m_cells.at(Point(1, 1));
+}
+
+//TODO: refactor .. could be done simpler
+bool Maze::createLevel()
+{
+	m_cells = {};
+	vector<Point> cellPoints = {};
+	// reverse x and y loop order so we can preserve previous row. (could have done previous column as well.)
+	for (unsigned int y = 0; y < m_size; y += m_cellSize)
+	{
+		for (unsigned int x = 0; x < m_size; x += m_cellSize)
+		{
+			Point pt = Point(x / m_cellSize, y / m_cellSize);
+			m_cells[pt] = new Cell(x, y, m_cellSize);
+
+			//DELETME: used for debuging
+			//m_cells[pt]->addWall(Cell::TOP);
+			//m_cells[pt]->addWall(Cell::BOTTOM);
+			//m_cells[pt]->addWall(Cell::LEFT);
+			//m_cells[pt]->addWall(Cell::RIGHT);
+
+			//add border
+			if (y == 0)
+				m_cells[pt]->addWall(Cell::TOP);
+			if (y == m_size - m_cellSize)
+				m_cells[pt]->addWall(Cell::BOTTOM);
+			if (x == 0)
+				m_cells[pt]->addWall(Cell::LEFT);
+			if (x == m_size - m_cellSize)
+				m_cells[pt]->addWall(Cell::RIGHT);
+		}
+	}
+	addSpecialWalls();
+	std::cout << "finito" << std::endl;
+	return true;
+}
+
+void Maze::addSpecialWalls()
+{
+	for (size_t i = 0; i < m_numOfCells; i++)
+	{
+		//Add the Attached Walls
+		for (std::vector<int>::iterator it = attachedwalls.begin(); it != attachedwalls.end(); ++it)
+		{
+			if (i != m_numOfCells - 1 && i != m_numOfCells - 2)
+				m_cells.at(Point(*it, i))->addWall(Cell::LEFT);
+		}
+		//Add the detached walls
+		for (std::vector<int>::iterator it = detachedwalls.begin(); it != detachedwalls.end(); ++it)
+		{
+			if (i != m_numOfCells -1 && i != 0)
+				m_cells.at(Point(*it, i))->addWall(Cell::LEFT);
+		}
+	}
 }
 
 bool Maze::createMaze()
@@ -94,15 +194,15 @@ std::deque<Cell*> Maze::aStarSearch(Cell * start, Cell * end)
 	return std::deque<Cell*>();
 }
 
-
-
-
 void Maze::render(Renderer& renderer)
 {
 	for (auto &c : m_cells) {
+		// if outside the viewable area then skip the tile ie Don't draw
+		/*if ((c.second->rects[i].pos.x - Camera::Instance()->getPosition().x) < -m_cellSize
+			|| (rects[i].pos.x - Camera::Instance()->getPosition().x) > Constants::WIN_WIDTH)
+		{
+			continue;
+		}*/
 		c.second->render(renderer);
 	}
 }
-
-
-
