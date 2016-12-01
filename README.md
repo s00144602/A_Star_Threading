@@ -1,7 +1,10 @@
 # SDL A* Pathfinding Simulation using Multithreading.
 
 >3 grids (30X30,100X100 and 1000X1000 grids) 
->Aim is to use threads to enhance the system (ie increase FPS)
+
+>3 Different collection of NPCS (5,50,500) performing A*
+
+>Use multiple threads to enhance the system (ie increase FPS)
 
 ![alt text](AIthread.png)
 
