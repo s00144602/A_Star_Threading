@@ -3,7 +3,7 @@
 
 
 SmallScene::SmallScene():
-	m_maze(900,9)
+	m_maze(1000,1)
 {
 
 }

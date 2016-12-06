@@ -26,15 +26,9 @@ void Cell::renderSelected(SDL_Renderer *renderer, SDL_Rect *mazeRect) const
 //TODO:refactor .. get rid of walls and attach a boolean to detemine if wall or not
 void Cell::render(Renderer& renderer) const
 {
-	//if (x - Camera::Instance()->getPosition().x < -size || x - Camera::Instance()->getPosition().x > Constants::WIN_WIDTH)
-	//{
-	//	std::cout << "SKIP" << std::endl;
-	//}
-	//else
-	//{
-		Rect drawRect = Rect(Point2D(x - Camera::Instance()->getPosition().x, y - Camera::Instance()->getPosition().y), Size2D(size, size));
-		renderer.drawRect(drawRect, Colour(0, 0, 0, 255));
-	//}
+	Rect drawRect = Rect(Point2D(x - Camera::Instance()->getPosition().x, y - Camera::Instance()->getPosition().y), Size2D(size, size));
+	renderer.drawRect(drawRect, Colour(0, 0, 0, 255));
+
 	//Rect rects[4] = {};
 	//int rectCount = 0;
 	//if (walls[0]) {

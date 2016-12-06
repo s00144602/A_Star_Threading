@@ -12,13 +12,21 @@
 #include "Camera.h"
 using namespace std;
 
+#define FPS_INTERVAL 1.0 //seconds
+Uint32 fps_lastTme;
+Uint32 fps_current=0;
+Uint32 fps_frames;
+
 Game::Game():
 	m_lastTime(LTimer::gameTime()),
 	m_winSize(Constants::WIN_WIDTH, Constants::WIN_HEIGHT)
 {
 	m_pause = false;
 	m_quit = false;
+	fps_lastTme = SDL_GetTicks();
+	fps_frames = 0;
 }
+
 
 Game::~Game()
 {
@@ -98,8 +106,21 @@ void Game::render()
 	//for (std::vector<GameObject*>::iterator i = m_gameObjects.begin(), e= m_gameObjects.end(); i != e; i++) {
 	//	(*i)->Render(m_renderer);
 	//}
-	std::string FPS = std::to_string(frameTicks);
-	m_renderer.drawText("AGENCYR.tff", "FPS: " + FPS);
+	
+	fps_frames++;
+	if (fps_lastTme < SDL_GetTicks() - FPS_INTERVAL * 1000)
+	{
+		fps_lastTme = SDL_GetTicks();
+		fps_current = fps_frames;
+		fps_frames = 0;
+		//Wait remaining time before going to next frame
+		//SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
+	}
+	if (fps_current != 0)
+	{
+		std::string FPS = std::to_string(fps_current);
+		m_renderer.drawText("AGENCYR.tff", "FPS: " + FPS);
+	}
 	m_renderer.present();// display the new frame (swap buffers)
 
 }
@@ -118,13 +139,9 @@ void Game::loop()
 			update();
 		render();
 
-		frameTicks = 1000 / (SDL_GetTicks() - startTime);//time since start of frame
+		//frameTicks = 1000 / (SDL_GetTicks() - startTime);//time since start of frame
 
-		//if (frameTicks < SCREEN_TICKS_PER_FRAME)
-		//{
-		//	//Wait remaining time before going to next frame
-		//	SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
-		//}
+
 	}
 }
 

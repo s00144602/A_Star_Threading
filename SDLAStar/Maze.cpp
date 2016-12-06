@@ -112,13 +112,7 @@ bool Maze::createLevel()
 			test++;
 			Point pt = Point(x / m_cellSize, y / m_cellSize);
 			//add border
-			if (y == 0)
-				m_wallCells[pt] = new Cell(x, y, m_cellSize, true);
-			else if (y == m_size - m_cellSize)
-				m_wallCells[pt] = new Cell(x, y, m_cellSize, true);
-			else  if (x == 0)
-				m_wallCells[pt] = new Cell(x, y, m_cellSize, true);
-			else if (x == m_size - m_cellSize)
+			if (y == 0 || y == m_size - m_cellSize || x == 0 || x == m_size - m_cellSize)
 				m_wallCells[pt] = new Cell(x, y, m_cellSize, true);
 			else
 				m_emptyCells[pt] = new Cell(x, y, m_cellSize, false);
