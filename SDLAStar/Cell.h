@@ -21,14 +21,14 @@ protected:
 	std::vector<Cell*> neighbors;
 	std::vector<Cell*> attachedNeighbors;
 public:
-	Cell(int x, int y, int size);
+	Cell(int x, int y, int size,bool isWall);
 	void render(Renderer& renderer) const;
 	void drawCircle(SDL_Renderer *renderer, SDL_Rect *mazeRect) const;
 	void renderSelected(SDL_Renderer *renderer, SDL_Rect *mazeRect) const;
 	void addNeighbor(Cell *neighbor, int direction);
 	void setSearchVisitId(unsigned int visitId);
 	bool isVisited(unsigned int searchId) const;
-
+	bool m_iswall;
 	std::vector<Cell *> getUnVisitedNeighbors(unsigned int searchId) const;
 	std::vector<Cell *> getUnVisitedAttachedNeighbors(unsigned int searchId) const;
 	void removeWall(const Cell *neighbor);

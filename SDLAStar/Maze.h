@@ -12,7 +12,8 @@ typedef std::pair<int, int> Point;
 class Maze
 {
 protected:
-	std::map<Point, Cell *> m_cells;
+	std::map<Point, Cell *> m_emptyCells;
+	std::map<Point, Cell *> m_wallCells;
 	// the size of this maze.
 	unsigned int m_size;
 	// the size of the cells in the maze.

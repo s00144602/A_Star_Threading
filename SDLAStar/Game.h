@@ -8,6 +8,7 @@
 #include "Scene.h"
 #include "GameScene.h"
 #include "SmallScene.h"
+#include "LTimer.h"
 
 /** The game objct whic manages the game loop*/
 class Game:public EventListener
@@ -30,6 +31,7 @@ public:
 private:
 	InputManager m_inputManager;
 	Renderer m_renderer;
+	LTimer m_timer;
 	std::vector<GameObject*> m_gameObjects;
 	std::vector<Scene*> m_scenes;
 	unsigned int m_lastTime;//time of last update;

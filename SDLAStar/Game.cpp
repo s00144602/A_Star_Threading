@@ -69,10 +69,11 @@ void Game::destroy()
 	m_renderer.destroy();
 	
 }
-
+float frameTicks;
 //** calls update on all game entities*/
 void Game::update()
 {
+
 	unsigned int currentTime = LTimer::gameTime();//millis since game started
 	float deltaTime = (currentTime - m_lastTime) / 1000.0;//time since last update
 	SceneManager::Instance()->update(deltaTime);
@@ -97,8 +98,8 @@ void Game::render()
 	//for (std::vector<GameObject*>::iterator i = m_gameObjects.begin(), e= m_gameObjects.end(); i != e; i++) {
 	//	(*i)->Render(m_renderer);
 	//}
-	
-
+	std::string FPS = std::to_string(frameTicks);
+	m_renderer.drawText("AGENCYR.tff", "FPS: " + FPS);
 	m_renderer.present();// display the new frame (swap buffers)
 
 }
@@ -107,10 +108,9 @@ void Game::render()
 void Game::loop()
 {
 	LTimer capTimer;//to cap framerate
-
-	int frameNum = 0;
+	
 	while (!m_quit) { //game loop
-		capTimer.start();
+		float startTime = SDL_GetTicks();
 
 		m_inputManager.ProcessInput();
 
@@ -118,7 +118,8 @@ void Game::loop()
 			update();
 		render();
 
-		int frameTicks = capTimer.getTicks();//time since start of frame
+		frameTicks = 1000 / (SDL_GetTicks() - startTime);//time since start of frame
+
 		//if (frameTicks < SCREEN_TICKS_PER_FRAME)
 		//{
 		//	//Wait remaining time before going to next frame

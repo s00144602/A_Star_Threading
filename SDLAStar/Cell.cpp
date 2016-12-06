@@ -5,10 +5,10 @@
 #include "Constants.h"
 
 
-Cell::Cell(int x, int y, int size) :size(size), x(x), y(y), walls{ 0, 0, 0, 0 }, searchVisitId(0)
+Cell::Cell(int x, int y, int size, bool isWall) : size(size), x(x), y(y), searchVisitId(0), m_iswall(isWall)//,walls{ 0, 0, 0, 0 }
 {
 	neighbors = { nullptr, nullptr, nullptr, nullptr };
-	wallSize = 2;
+	//wallSize = 2;
 }
 
 void Cell::drawCircle(SDL_Renderer *renderer, SDL_Rect *mazeRect) const
@@ -23,53 +23,62 @@ void Cell::renderSelected(SDL_Renderer *renderer, SDL_Rect *mazeRect) const
 }
 
 
-//TODO:refactor .. must be better way to accomplish this
+//TODO:refactor .. get rid of walls and attach a boolean to detemine if wall or not
 void Cell::render(Renderer& renderer) const
 {
-	Rect rects[4] = {};
-	int rectCount = 0;
-	if (walls[0]) {
-		// top wall.
-		rects[rectCount++] = {
-			x, y,
-			size, wallSize,
-		};
-	}
-
-	if (walls[1]) {
-		// right wall.
-		rects[rectCount++] = {
-			x + size, y,
-			wallSize, size,
-		};
-	}
-
-	if (walls[2]) {
-		// bottom wall.
-		rects[rectCount++] = {
-			x, y + size,
-			size, wallSize,
-		};
-	}
-
-	if (walls[3]) {
-		// left wall.
-		rects[rectCount++] = {
-			x, y,
-			wallSize, size,
-		};
-	}
-	for (size_t i = 0; i < rectCount; i++)
-	{
-		// if outside the viewable area then skip the tile ie Don't draw
-		if ((rects[i].pos.x - Camera::Instance()->getPosition().x) < -size
-			|| (rects[i].pos.x - Camera::Instance()->getPosition().x) > Constants::WIN_WIDTH)
-		{ 
-			continue; 
-		}
-		Rect drawRect = Rect(Point2D(rects[i].pos.x - Camera::Instance()->getPosition().x, rects[i].pos.y - Camera::Instance()->getPosition().y), rects[i].size);
+	//if (x - Camera::Instance()->getPosition().x < -size || x - Camera::Instance()->getPosition().x > Constants::WIN_WIDTH)
+	//{
+	//	std::cout << "SKIP" << std::endl;
+	//}
+	//else
+	//{
+		Rect drawRect = Rect(Point2D(x - Camera::Instance()->getPosition().x, y - Camera::Instance()->getPosition().y), Size2D(size, size));
 		renderer.drawRect(drawRect, Colour(0, 0, 0, 255));
-	}
+	//}
+	//Rect rects[4] = {};
+	//int rectCount = 0;
+	//if (walls[0]) {
+	//	// top wall.
+	//	rects[rectCount++] = {
+	//		x, y,
+	//		size, wallSize,
+	//	};
+	//}
+
+	//if (walls[1]) {
+	//	// right wall.
+	//	rects[rectCount++] = {
+	//		x + size, y,
+	//		wallSize, size,
+	//	};
+	//}
+
+	//if (walls[2]) {
+	//	// bottom wall.
+	//	rects[rectCount++] = {
+	//		x, y + size,
+	//		size, wallSize,
+	//	};
+	//}
+
+	//if (walls[3]) {
+	//	// left wall.
+	//	rects[rectCount++] = {
+	//		x, y,
+	//		wallSize, size,
+	//	};
+	//}
+	//for (size_t i = 0; i < rectCount; i++)
+	//{
+	//	// if outside the viewable area then skip the tile ie Don't draw
+	//	if ((rects[i].pos.x - Camera::Instance()->getPosition().x) < -size
+	//		|| (rects[i].pos.x - Camera::Instance()->getPosition().x) > Constants::WIN_WIDTH)
+	//	{ 
+	//		continue; 
+	//	}
+	//	Rect drawRect = Rect(Point2D(rects[i].pos.x - Camera::Instance()->getPosition().x, rects[i].pos.y - Camera::Instance()->getPosition().y), rects[i].size);
+	//	renderer.drawRect(drawRect, Colour(0, 0, 0, 255));
+	//}
 }
 
 void Cell::addNeighbor(Cell *neighbor, int direction)

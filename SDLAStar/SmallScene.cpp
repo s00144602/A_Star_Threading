@@ -3,7 +3,7 @@
 
 
 SmallScene::SmallScene():
-	m_maze(1000,100)
+	m_maze(900,9)
 {
 
 }
@@ -23,13 +23,13 @@ void SmallScene::update(float p_deltaTime)
 
 void SmallScene::onEvent(EventListener::Event evt)
 {
+
 }
 
 void SmallScene::start()
 {
 	//Set up the grid
 	//m_maze.createGrid();
-	
 	m_maze.createLevel();
 }
 

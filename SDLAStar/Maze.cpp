@@ -14,13 +14,9 @@ Maze::Maze(unsigned int size, unsigned int cellSize) :
 	initialiseSpecialWalls();
 }
 
-//TODO:REfactor- must be a better way
+//TODO:REfactor- must be a better way (need to be dynamic)
 void Maze::initialiseSpecialWalls()
 {
-	//3
-	//(3*2) = 6
-	//(3*2)+(6*2) = 18
-	//2 detached
 	detachedwalls.push_back(m_numOfCells / 2);
 	detachedwalls.push_back(m_numOfCells / 3);
 	//1 attached
@@ -56,7 +52,7 @@ void Maze::initialiseSpecialWalls()
 
 void Maze::createGrid()
 {
-	m_cells = {};
+	m_emptyCells = {};
 	std::vector<Cell *> currentRow = {};
 	std::vector<Cell *> previousRow = {};
 	// reverse x and y loop order so we can preserve previous row. (could have done previous column as well.)
@@ -64,7 +60,7 @@ void Maze::createGrid()
 	for (unsigned int y = m_cellSize; y < m_size; y += m_cellSize) {
 		Cell *previousCell = nullptr;
 		for (unsigned int x = m_cellSize; x < m_size; x += m_cellSize) {
-			Cell *currentCell = new Cell(x, y, m_cellSize);
+			Cell *currentCell = new Cell(x, y, m_cellSize,false);
 			//TODO.. need to add back in the walls for the maze
 			currentCell->addWall(Cell::TOP);
 			currentCell->addWall(Cell::BOTTOM);
@@ -76,7 +72,7 @@ void Maze::createGrid()
 				currentCell->addNeighbor(previousCell, Cell::LEFT);
 			}
 			currentRow.push_back(currentCell);
-			m_cells[Point(x / m_cellSize, y / m_cellSize)] = currentCell;
+			m_emptyCells[Point(x / m_cellSize, y / m_cellSize)] = currentCell;
 			previousCell = currentCell;
 
 		}
@@ -96,34 +92,39 @@ void Maze::createGrid()
 
 Cell *Maze::firstCell()
 {
-	return m_cells.at(Point(1, 1));
+	return m_emptyCells.at(Point(1, 1));
 }
-
+//DELETE ME
+int test = 0;
 //Creates a simple level with desired number of attached and detached walls
 bool Maze::createLevel()
 {
-	m_cells = {};
+	m_emptyCells = {};
+	m_wallCells = {};
 	vector<Point> cellPoints = {};
 	// reverse x and y loop order so we can preserve previous row. (could have done previous column as well.)
+	#pragma omp parallel for
 	for (unsigned int y = 0; y < m_size; y += m_cellSize)
 	{
+	#pragma omp parallel for
 		for (unsigned int x = 0; x < m_size; x += m_cellSize)
 		{
+			test++;
 			Point pt = Point(x / m_cellSize, y / m_cellSize);
-			m_cells[pt] = new Cell(x, y, m_cellSize);
-
 			//add border
 			if (y == 0)
-				m_cells[pt]->addWall(Cell::TOP);
-			if (y == m_size - m_cellSize)
-				m_cells[pt]->addWall(Cell::BOTTOM);
-			if (x == 0)
-				m_cells[pt]->addWall(Cell::LEFT);
-			if (x == m_size - m_cellSize)
-				m_cells[pt]->addWall(Cell::RIGHT);
+				m_wallCells[pt] = new Cell(x, y, m_cellSize, true);
+			else if (y == m_size - m_cellSize)
+				m_wallCells[pt] = new Cell(x, y, m_cellSize, true);
+			else  if (x == 0)
+				m_wallCells[pt] = new Cell(x, y, m_cellSize, true);
+			else if (x == m_size - m_cellSize)
+				m_wallCells[pt] = new Cell(x, y, m_cellSize, true);
+			else
+				m_emptyCells[pt] = new Cell(x, y, m_cellSize, false);
 		}
 	}
-	addSpecialWalls();
+	//addSpecialWalls();
 	std::cout << "finito" << std::endl;
 	return true;
 }
@@ -136,13 +137,13 @@ void Maze::addSpecialWalls()
 		for (std::vector<int>::iterator it = attachedwalls.begin(); it != attachedwalls.end(); ++it)
 		{
 			if (i != m_numOfCells - 1 && i != m_numOfCells - 2)
-				m_cells.at(Point(*it, i))->addWall(Cell::LEFT);
+				m_emptyCells.at(Point(*it, i))->addWall(Cell::LEFT);
 		}
 		//Add the detached walls
 		for (std::vector<int>::iterator it = detachedwalls.begin(); it != detachedwalls.end(); ++it)
 		{
 			if (i != m_numOfCells -1 && i != 0)
-				m_cells.at(Point(*it, i))->addWall(Cell::LEFT);
+				m_emptyCells.at(Point(*it, i))->addWall(Cell::LEFT);
 		}
 	}
 }
@@ -150,13 +151,13 @@ void Maze::addSpecialWalls()
 bool Maze::createMaze()
 {
 	// start at the top cell
-	Cell *currentCell = m_cells.at(Point(1, 1));
+	Cell *currentCell = m_emptyCells.at(Point(1, 1));
 	// we are visiting the current cell. start at 1
 	currentCell->setSearchVisitId(m_searchId);
 	// stack used to backtrack once a dead end has been reached.
 	std::stack<Cell *> stack;
 	unsigned int visited = 1;
-	while (visited != m_cells.size()) {
+	while (visited != m_emptyCells.size()) {
 		//visit every cell once.
 		// gather all the cells that we have not visited that are neighbors to this one
 		auto neighbors = currentCell->getUnVisitedNeighbors(m_searchId);
@@ -192,15 +193,16 @@ std::deque<Cell*> Maze::aStarSearch(Cell * start, Cell * end)
 	return std::deque<Cell*>();
 }
 
+//TODO: take the camera pos and width into account to determine which cells to render
+//Make camera zoom in for scaling.. help with not having to render all the cells
+//perhaps have two arrays .. one for walls and one for no walls . only draw the walls
+//also use the camera culling
 void Maze::render(Renderer& renderer)
 {
-	for (auto &c : m_cells) {
-		// if outside the viewable area then skip the tile ie Don't draw
-		/*if ((c.second->rects[i].pos.x - Camera::Instance()->getPosition().x) < -m_cellSize
-			|| (rects[i].pos.x - Camera::Instance()->getPosition().x) > Constants::WIN_WIDTH)
-		{
-			continue;
-		}*/
+	int camPos = Camera::Instance()->getPosition().x;
+
+	for (auto &c : m_wallCells) {
+		
 		c.second->render(renderer);
 	}
 }
