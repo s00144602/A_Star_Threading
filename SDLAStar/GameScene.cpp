@@ -2,7 +2,7 @@
 #include "GameScene.h"
 
 GameScene::GameScene():
-	m_maze(300,10)
+	m_TileMap(300,10)
 {
 	bool m_keyDown;
 }
@@ -14,7 +14,7 @@ GameScene::~GameScene()
 
 void GameScene::render(Renderer & r)
 {
-	m_maze.render(r);
+	m_TileMap.render(r);
 }
 
 void GameScene::update(float p_deltaTime)
@@ -32,12 +32,7 @@ void GameScene::onEvent(EventListener::Event evt)
 
 void GameScene::start()
 {
-	//Set up the maze
-	m_maze.createGrid();
-	if (!m_maze.createMaze()) {
-		std::cout << "Failed to create maze." << std::endl;
-		//return 1;
-	}
+	m_TileMap.createLevel();
 }
 
 void GameScene::stop()

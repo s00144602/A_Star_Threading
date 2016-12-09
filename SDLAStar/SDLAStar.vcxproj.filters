@@ -81,9 +81,6 @@
     <ClInclude Include="Cell.h">
       <Filter>Header Files\Maze</Filter>
     </ClInclude>
-    <ClInclude Include="Maze.h">
-      <Filter>Header Files\Maze</Filter>
-    </ClInclude>
     <ClInclude Include="SceneId.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
@@ -93,10 +90,13 @@
     <ClInclude Include="Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SmallScene.h">
+    <ClInclude Include="Constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Constants.h">
+    <ClInclude Include="TileMap.h">
+      <Filter>Header Files\Maze</Filter>
+    </ClInclude>
+    <ClInclude Include="NPC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -125,9 +125,6 @@
     <ClCompile Include="Cell.cpp">
       <Filter>Source Files\Maze</Filter>
     </ClCompile>
-    <ClCompile Include="Maze.cpp">
-      <Filter>Source Files\Maze</Filter>
-    </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
@@ -140,7 +137,10 @@
     <ClCompile Include="Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SmallScene.cpp">
+    <ClCompile Include="TileMap.cpp">
+      <Filter>Source Files\Maze</Filter>
+    </ClCompile>
+    <ClCompile Include="NPC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

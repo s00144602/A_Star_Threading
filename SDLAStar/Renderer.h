@@ -8,6 +8,7 @@
 
 #include "BasicTypes.h"
 #include <string>
+#include "SDL_ttf.h"
 
 //Responsible for all drawing operations
 //abstracts away specfic SDL specific drawing functions
@@ -21,6 +22,10 @@ class Renderer{
 	Size2D viewportSize;
 	SDL_Window *window;
 	SDL_Renderer *sdl_renderer;
+	TTF_Font* font;
+	SDL_Texture* Message[10];
+	SDL_Color colour = {0,0,0};
+	SDL_Surface* surfaceMessage;
 
 public:
 	Renderer();
@@ -28,7 +33,8 @@ public:
 	bool init(const Size2D&, const char*);
 	void drawRect(const Rect&, const Colour&);
 	void drawWorldRect(const Rect&, const Colour&);
-	void drawText(std::string font, std::string message);
+	void initTTF();
+	void drawText(int id, std::string message);
 	void present();
 	void clear(const Colour&);
 	Point2D worldToScreen(const Point2D&);

@@ -2,7 +2,7 @@
 
 #include "Scene.h"
 #include "Renderer.h"
-#include "Maze.h"
+#include "TileMap.h"
 #include <string>
 
 using namespace std;
@@ -19,7 +19,7 @@ public:
 	void start()override;
 	void stop()override;
 private:
-	Maze m_maze;
+	TileMap m_TileMap;
 	bool m_startClicked;
 	bool m_keyDown;
 };

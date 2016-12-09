@@ -4,10 +4,9 @@
 #include "GameObject.h"
 #include "InputManager.h"
 #include "EventListener.h"
-#include "Maze.h"
+#include "TileMap.h"
 #include "Scene.h"
 #include "GameScene.h"
-#include "SmallScene.h"
 #include "LTimer.h"
 
 /** The game objct whic manages the game loop*/

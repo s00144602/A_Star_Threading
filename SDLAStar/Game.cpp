@@ -10,12 +10,13 @@
 #include "Game.h"
 #include "Constants.h"
 #include "Camera.h"
+
 using namespace std;
 
 #define FPS_INTERVAL 1.0 //seconds
-Uint32 fps_lastTme;
-Uint32 fps_current=0;
-Uint32 fps_frames;
+Uint32  fps_lastTme;
+Uint32  fps_current;
+Uint32  fps_frames;
 
 Game::Game():
 	m_lastTime(LTimer::gameTime()),
@@ -23,7 +24,7 @@ Game::Game():
 {
 	m_pause = false;
 	m_quit = false;
-	fps_lastTme = SDL_GetTicks();
+	fps_lastTme = 10000;
 	fps_frames = 0;
 }
 
@@ -36,7 +37,7 @@ Game::~Game()
 bool Game::init() {	
 
 	//creates our renderer, which looks after drawing and the window
-	m_renderer.init(m_winSize,"A* Maze implementing Threads");
+	m_renderer.init(m_winSize,"A* TileMap implementing Threads");
 
 	//set up the viewport
 	//we want the vp centred on origin and 20 units wide
@@ -47,7 +48,6 @@ bool Game::init() {
 	m_vpRect = Rect(vpBottomLeft,m_vpSize);
 	m_renderer.setViewPort(m_vpRect);
 	//Add Scenes
-	SceneManager::Instance()->addScene(new SmallScene());
 	SceneManager::Instance()->addScene(new GameScene());
 
 	//create some game objects
@@ -106,9 +106,9 @@ void Game::render()
 	//for (std::vector<GameObject*>::iterator i = m_gameObjects.begin(), e= m_gameObjects.end(); i != e; i++) {
 	//	(*i)->Render(m_renderer);
 	//}
-	
-	fps_frames++;
-	if (fps_lastTme < SDL_GetTicks() - FPS_INTERVAL * 1000)
+	//
+	fps_frames += 1;
+	if (fps_lastTme < SDL_GetTicks() - 1000)
 	{
 		fps_lastTme = SDL_GetTicks();
 		fps_current = fps_frames;
@@ -116,10 +116,10 @@ void Game::render()
 		//Wait remaining time before going to next frame
 		//SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
 	}
+
 	if (fps_current != 0)
 	{
-		std::string FPS = std::to_string(fps_current);
-		m_renderer.drawText("AGENCYR.tff", "FPS: " + FPS);
+		m_renderer.drawText(0,"FPS: " + std::to_string(fps_current));
 	}
 	m_renderer.present();// display the new frame (swap buffers)
 
@@ -131,7 +131,7 @@ void Game::loop()
 	LTimer capTimer;//to cap framerate
 	
 	while (!m_quit) { //game loop
-		float startTime = SDL_GetTicks();
+		//float startTime = SDL_GetTicks();
 
 		m_inputManager.ProcessInput();
 
@@ -140,8 +140,6 @@ void Game::loop()
 		render();
 
 		//frameTicks = 1000 / (SDL_GetTicks() - startTime);//time since start of frame
-
-
 	}
 }
 

@@ -9,8 +9,6 @@ Camera * Camera::Instance()
 	if (s_pCamera == nullptr)
 	{
 		s_pCamera = new Camera();
-		//test
-
 	}
 	return s_pCamera;
 }
@@ -22,13 +20,13 @@ void Camera::update(Point2D velocity)
 void Camera::onEvent(EventListener::Event evt)
 {
 	switch (evt) {
-		//TODO: Change to maze size restriction
+		//TODO: Change to TileMap size restriction
 	case EventListener::Event::UP:
 		if (m_position.y > -11)
 			setPosition(Point2D(m_position.x, m_position.y - 11));
 		break;
 	case EventListener::Event::DOWN:
-		if (m_position.x < Constants::WIN_HEIGHT)
+	/*	if (m_position.x < Constants::WIN_HEIGHT)*/
 		setPosition(Point2D(m_position.x, m_position.y + 11));
 		break;
 	case EventListener::Event::LEFT:
@@ -36,7 +34,7 @@ void Camera::onEvent(EventListener::Event evt)
 		setPosition(Point2D(m_position.x - 11, m_position.y));
 		break;
 	case EventListener::Event::RIGHT:
-		if (m_position.x < Constants::WIN_WIDTH)
+		/*if (m_position.x < Constants::WIN_WIDTH)*/
 		setPosition(Point2D(m_position.x + 11, m_position.y));
 		break;
 

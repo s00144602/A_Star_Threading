@@ -7,6 +7,7 @@
 #include <vector>
 #include "Constants.h"
 #include <time.h>
+
 using namespace std;
 #define SDL_MAIN_HANDLED
 
@@ -22,6 +23,7 @@ Renderer::Renderer() :sdl_renderer(NULL)
 {
 
 }
+
 
 bool Renderer::init(const Size2D& winSize, const char* title) 
 {
@@ -59,6 +61,8 @@ bool Renderer::init(const Size2D& winSize, const char* title)
 		return false;
 	}
 	
+	initTTF();
+	
 	return true;
 }
 
@@ -80,7 +84,7 @@ void Renderer::drawWorldRect(const Rect &r, const Colour &c)
 	drawRect(worldToScreen(r), c);
 }
 
-void Renderer::drawText(string fontDir, string message)
+void Renderer::initTTF() 
 {
 	// Initialize SDL_ttf library
 	if (TTF_Init() != 0)
@@ -90,7 +94,7 @@ void Renderer::drawText(string fontDir, string message)
 		exit(1);
 	}
 
-	TTF_Font* font = TTF_OpenFont("arial.ttf", 20); 
+	font = TTF_OpenFont("arial.ttf", 20);
 	//this opens a font style and sets a size
 	if (font == NULL)
 	{
@@ -99,20 +103,18 @@ void Renderer::drawText(string fontDir, string message)
 		SDL_Quit();
 		exit(1);
 	}
-	char *a = new char[message.size() + 1];
-	a[message.size()] = 0;
-	memcpy(a, message.c_str(), message.size());
-	SDL_Color Black = { 0, 0, 0 };  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
+}
 
-	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, a, Black); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
-	
-	SDL_Texture* Message = SDL_CreateTextureFromSurface(sdl_renderer, surfaceMessage); //now you can convert it into a texture
+SDL_Rect renderQuad;
+void Renderer::drawText(int i, string message)
+{
+	surfaceMessage = TTF_RenderText_Solid(font, message.c_str(), colour); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+	Message[i] = SDL_CreateTextureFromSurface(sdl_renderer, surfaceMessage); //now you can convert it into a texture
 
-	int text_width = surfaceMessage->w;
-	int text_height = surfaceMessage->h;
 	SDL_FreeSurface(surfaceMessage);
-	SDL_Rect renderQuad = { 20, Constants::WIN_HEIGHT - 30, text_width, text_height };
-	SDL_RenderCopy(sdl_renderer, Message, NULL, &renderQuad);
+	renderQuad = { 30, 20, surfaceMessage->w, surfaceMessage->h };
+	SDL_RenderCopy(sdl_renderer, Message[i], NULL, &renderQuad);
+	SDL_DestroyTexture(Message[i]);
 }
 
 void Renderer::present() 
