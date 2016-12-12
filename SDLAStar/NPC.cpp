@@ -37,6 +37,8 @@ void NPC::resetMaps()
 	 distanceToRoot = map<Point, float>();
 }
 
+//TODO: refactor needed to tidy into functions
+//Threading etc.
 void NPC::findPath()
 {
 	if (!m_pathFound)

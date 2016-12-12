@@ -5,7 +5,6 @@
 #include <map>
 using namespace std;
 
-
 class NPC: public GameObject
 {
 

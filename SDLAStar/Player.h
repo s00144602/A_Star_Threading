@@ -15,7 +15,5 @@ public:
 	Point m_pos;//taken as the grid pos
 	int m_size;
 	map<Point, Cell*> m_map = map<Point,Cell *>();
-private:
-	void checkNeighbourCells(float direction);
 };
 

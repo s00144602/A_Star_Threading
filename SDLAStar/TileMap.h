@@ -14,7 +14,6 @@ protected:
 	//used for rendering the walls
 	vector<Cell *> m_Wallcells;
 
-
 	// the texture this TileMap is drawn on. the main renderer draws this texture.
 	SDL_Texture *m_texture;
 public:
