@@ -1,11 +1,12 @@
 #include "stdafx.h"
 #include "GameScene.h"
+#include "Constants.h"
 
 bool init = false;
-GameScene::GameScene():
-	m_TileMap(300,10)
+GameScene::GameScene(int mapID):
+	m_id(mapID),
+	m_TileMap(Constants::MAP_SIZES[mapID],Constants::CELL_SIZES[mapID])
 {
-	bool m_keyDown;
 }
 
 GameScene::~GameScene()
@@ -42,12 +43,13 @@ void GameScene::onEvent(EventListener::Event evt)
 
 void GameScene::start()
 {
-	//m_TileMap.createLevel();
+	//Add to npcs
+	//randomize and use threads to update
 	npcs.push_back(
-		NPC(m_TileMap.m_cells.at(Point(1, 1))->getPos(),
-		10,
+		NPC(m_TileMap.m_cells.at(Point(1, 10))->getGridPos(),
+		Constants::CELL_SIZES[m_id],
 		m_TileMap.m_cells));
-	//testNPC = NPC(m_TileMap.m_cells.at(Point(1,1))->getPos(), 10, m_TileMap.m_cells);
+
 	init = true;
 
 }

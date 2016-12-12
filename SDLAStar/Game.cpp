@@ -48,7 +48,7 @@ bool Game::init() {
 	m_vpRect = Rect(vpBottomLeft,m_vpSize);
 	m_renderer.setViewPort(m_vpRect);
 	//Add Scenes
-	SceneManager::Instance()->addScene(new GameScene());
+	SceneManager::Instance()->addScene(new GameScene(1));
 
 	//create some game objects
 

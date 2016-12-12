@@ -10,8 +10,9 @@ using namespace std;
 class GameScene : public Scene
 {
 public:
-	GameScene();
+	GameScene(int mapId); // 0 for small, 1 for medium 2 for large
 	~GameScene();
+	int m_id;
 	vector<NPC> npcs = vector<NPC>();
 	
 	void render(Renderer &r) override;
