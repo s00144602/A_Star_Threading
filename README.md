@@ -10,14 +10,14 @@
 
 | ToDo            |Est Time  |Done?|  
 | -------------   |:--------:|-----|
-| Add label       | 30m      |    |
-| Add NPC         | 10m      |    | 
-| Rendering Tread | 30m      |    |
-| Implement A*    | 3hrs     |    | 
+| Add label       | 30m      |  Y  |
+| Add NPC         | 10m      |   created in C#- need to transfer logic to c++ | 
+| Rendering Tread | 30m      |  not sure if needed.. will look into  |
+| Implement A*    | 3hrs     |  created in C#- need to transfer logic to c++  | 
 | Add Player      | 1hr      |    |
 | SetasNPC target | 10m      |    |
 | UI for switching| 30m      |    |
-| UI for FPS etc. | 30m      |    |
+| UI for FPS etc. | 30m      | showing FPS  |
 | Thread NPCs     | 4hrs     |    |
 | toggle threading| 20m      |    |
 | examine results | 2hr      |    |
