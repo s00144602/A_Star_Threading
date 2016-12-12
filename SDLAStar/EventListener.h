@@ -16,7 +16,11 @@ public:
 		DOWN,
 		LEFT,
 		RIGHT,
-		CHANGESCENE
+		CHANGESCENE,
+		W,
+		A,
+		S,
+		D
 	};
 
 	virtual void onEvent(Event)=0;

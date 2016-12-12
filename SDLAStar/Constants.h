@@ -1,4 +1,5 @@
 #pragma once
+#include "BasicTypes.h"
 
 namespace Constants
 {
@@ -19,5 +20,12 @@ namespace Constants
 		20,
 		10,
 		1
+	};
+
+	const Point NPC_START_RANGE[] =
+	{
+		Point(25,28),
+		Point(45,98),
+		Point(750,990)
 	};
 }

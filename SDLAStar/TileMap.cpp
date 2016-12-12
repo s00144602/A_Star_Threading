@@ -4,7 +4,7 @@
 #include <vector>
 #include "Renderer.h"
 #include <omp.h>
-#include <time.h> 
+#include "MathsUtil.h"
 
 
 TileMap::TileMap(unsigned int size, unsigned int cellSize) :
@@ -20,8 +20,6 @@ TileMap::TileMap(unsigned int size, unsigned int cellSize) :
 //walls created with random"ish" length and random"ish" x pos 
 void TileMap::createWalls()
 {
-	/* initialize random seed: */
-	srand(time(NULL));
 	vector<int>& wallArray = vector<int>();
 	//3 walls (1attached)
 	if (m_numOfCells <= 32)
@@ -43,8 +41,8 @@ void TileMap::createWalls()
 	int end;
 	for (size_t i = 0; i < wallArray.size(); i++)
 	{
-		start = rangeRandom(2, 3);
-		end = rangeRandom(m_numOfCells - 4, m_numOfCells-2);
+		start = MathsUtil::randomRange(2, 3);
+		end = MathsUtil::randomRange(m_numOfCells - 4, m_numOfCells-2);
 		for (size_t j = 0; j < m_numOfCells; j++)
 		{
 			//Attached at the top walls
@@ -84,21 +82,10 @@ void TileMap::createWallArray(vector<int>& wallArray, int numberOfWalls)
 	int y = m_numOfCells / (numberOfWalls+1);
 	for (size_t i = 0; i < numberOfWalls; i++)
 	{
-		wallArray.push_back(rangeRandom(x, y));
+		wallArray.push_back(MathsUtil::randomRange(x, y));
 		x += m_numOfCells / (numberOfWalls);
 		y += m_numOfCells / (numberOfWalls);
 	}
-}
-
-int TileMap::rangeRandom(int min, int max) 
-{
-	int n = max - min + 1;
-	int remainder = RAND_MAX % n;
-	int x;
-	do {
-		x = rand();
-	} while (x >= RAND_MAX - remainder);
-	return min + x % n;
 }
 
 //Creates a simple level with desired number of attached and detached walls
@@ -148,12 +135,6 @@ void TileMap::createCellNeighbours()
 			c.second->addNeighbor(m_cells[Point(c.second->getGridPos().first + 1, c.second->getGridPos().second)]);
 	}
 
-}
-
-std::deque<Cell*> TileMap::aStarSearch(Cell * start, Cell * end)
-{
-	//TODO: implementation
-	return std::deque<Cell*>();
 }
 
 //TODO: take the camera pos and width into account to determine which cells to render

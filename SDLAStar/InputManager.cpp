@@ -61,6 +61,18 @@ void InputManager::ProcessInput()
 					case SDLK_RIGHT:
 						Dispatch(EventListener::Event::RIGHT);
 						break;
+					case SDLK_w:
+						Dispatch(EventListener::Event::W);
+						break;
+					case SDLK_a:
+						Dispatch(EventListener::Event::A);
+						break;
+					case SDLK_s:
+						Dispatch(EventListener::Event::S);
+						break;
+					case SDLK_d:
+						Dispatch(EventListener::Event::D);
+						break;
 				}
 				break;
 			

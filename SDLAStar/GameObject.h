@@ -16,6 +16,5 @@ public:
 	virtual void render(Renderer& r)=0;
 	virtual void update(float deltaTime)=0;
 
-
 };
 

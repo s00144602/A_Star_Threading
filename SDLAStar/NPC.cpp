@@ -3,64 +3,51 @@
 #include <algorithm>
 #include <iterator>
 #include <cmath> 
+#include "MathsUtil.h"
 
-NPC::NPC(Point startPos, int size, std::map<Point, Cell*> m_cells) :
+NPC::NPC(Point startPos, int size, std::map<Point, Cell*> cells) :
 	m_pathFound(false),
 	m_startPos(startPos),
 	m_pos(startPos),
-	m_map(m_cells),
+	m_cells(cells),
 	m_size(size)
-	//m_currentCell(m_map.atPoint(startPos))
-	//m_targetCell(Point(10,10), 10, false)
 {
-	cout << "debug" << endl;
+	cout << "NPC created" << endl;
 }
 
 NPC::~NPC()
 {
 }
 
-void NPC::update(float deltaTime)
+void NPC::update(float delatTime)
 {
 	findPath();
 }
 
-//typedef std::pair<Cell, int> MapCopy;
-//struct CompareSecond
-//{
-//	bool operator()(const MapCopy& left, const MapCopy& right) const
-//	{
-//		return left.second < right.second;
-//	}
-//};
-//
-////returns the minimum in
-//int NPC::getMin(std::map<Cell, int> mymap)
-//{
-//	std::pair<Cell, int> min = *std::min_element(mymap.begin(), mymap.end(), CompareSecond());
-//	return min.second;
-//}
-
+void NPC::resetMaps() 
+{
+	m_color = { MathsUtil::randomRange(0,255), MathsUtil::randomRange(0,255), MathsUtil::randomRange(0,255),25 };
+	// Keep track of cells that have been scored and neighbours discovered
+	 checkedCells = map<Point, Cell *>();
+	// Keep track of cells that are scored and were discovered but neighbours not discovered
+	 availableCells = map<Cell *, float>();
+	// For every cell, keep track of what cell discovered it. This will be used for finding the final path
+	 parentCells = map<Point, Point>();
+	// For every cell discovered, keep track of how many steps it took to get there
+	 distanceToRoot = map<Point, float>();
+}
 
 void NPC::findPath()
 {
-
 	if (!m_pathFound)
 	{
-		// Keep track of cells that have been scored and neighbours discovered
-		map<Point, Cell *> checkedCells = map<Point, Cell *>();
-		// Keep track of cells that are scored and were discovered but neighbours not discovered
-		map<Cell *, float> availableCells = map<Cell *, float>();
-		// For every cell, keep track of what cell discovered it. This will be used for finding the final path
-		map<Point, Point> parentCells = map<Point, Point>();
-		// For every cell discovered, keep track of how many steps it took to get there
-		map<Point, float> distanceToRoot = map<Point, float>();
-		// When a route to the target path is found, this will contain a list of points (The shortest distance)
-		finalPath = vector<Cell*>();
-		Cell* currentCheckingCell = m_map.at(m_startPos);
-		//Cell* currentCheckingCell = m_map.at(Point(1, 1));
+		//init the maps 
+		resetMaps();
 
-		m_targetCell = m_map.at(Point(28, 28));
+		//set the currentcheckking tile to be the starting pos of the npc
+		Cell* currentCheckingCell = m_cells.at(m_startPos);
+		
+		//m_targetCell = m_map.at(Point(28, 28));
 		availableCells.insert(make_pair(currentCheckingCell, getManahattanScore(currentCheckingCell->getGridPos())));
 		distanceToRoot.emplace(currentCheckingCell->getGridPos(), 0);
 
@@ -139,7 +126,7 @@ void NPC::findPath()
 			}
 		}
 		// #Path has been found
-
+		
 		m_pos = currentCheckingCell->getGridPos();
 		finalPath.push_back(currentCheckingCell);
 
@@ -171,21 +158,37 @@ float NPC::getManahattanScore(Point gridPos)
 
 void NPC::render(Renderer & r)
 {
-	
-	r.drawCircle(
-		(m_pos.first*m_size) +m_size/2 - Camera::Instance()->getPosition().x,
-		(m_pos.second*m_size) +m_size/2 - Camera::Instance()->getPosition().y,
-		m_size/2,
-		{ 0,0,0 });
-
+	//draw npc arriving
+	r.drawRect(
+		Rect(
+		(m_pos.first*m_size) - Camera::Instance()->getPosition().x,
+			(m_pos.second*m_size) - Camera::Instance()->getPosition().y,
+			m_size,
+			m_size),
+			{ 0,0,0,100 }
+	);
+	//r.drawCircle(
+	//(m_pos.first*m_size) + m_size / 2 - Camera::Instance()->getPosition().x,
+	//(m_pos.second*m_size) + m_size / 2 - Camera::Instance()->getPosition().y,
+	//m_size / 2,
+	//{ 0,0,0 });
+	//draw path
 	for (auto t : finalPath)
 	{
-		r.drawCircle(
-			(t->getPos().first) +m_size/2 - Camera::Instance()->getPosition().x,
-			(t->getPos().second) + m_size/2- Camera::Instance()->getPosition().y,
-			m_size/2,
-			{ 0,0,255 });
+		r.drawRect(
+			Rect(
+				t->getPos().first + m_size/4 - Camera::Instance()->getPosition().x,
+				t->getPos().second + m_size/4 - Camera::Instance()->getPosition().y,
+				m_size/2, 
+				m_size/2), 
+				m_color
+		);
 	}
+}
+
+void NPC::setTargetGridPos(Point target)
+{
+	m_targetCell = m_cells.at(target);
 }
 
 

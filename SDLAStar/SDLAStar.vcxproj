@@ -169,7 +169,9 @@
     <ClInclude Include="EventListener.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LTimer.h" />
+    <ClInclude Include="MathsUtil.h" />
     <ClInclude Include="NPC.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Renderer.h" />
@@ -187,7 +189,9 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LTimer.cpp" />
+    <ClCompile Include="MathsUtil.cpp" />
     <ClCompile Include="NPC.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Renderer.cpp" />

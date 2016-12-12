@@ -2,7 +2,7 @@
 #include <iostream>
 
 //Define some basic types needed for 2D graphics
-
+typedef std::pair<int, int> Point;
 
 class Point2D {
 public:

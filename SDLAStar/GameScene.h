@@ -4,6 +4,7 @@
 #include "TileMap.h"
 #include <string>
 #include "NPC.h"
+#include "Player.h"
 
 using namespace std;
 
@@ -14,11 +15,12 @@ public:
 	~GameScene();
 	int m_id;
 	vector<NPC> npcs = vector<NPC>();
-	
+	Player m_player;
 	void render(Renderer &r) override;
 	void update(float p_deltaTime) override;
 	void onEvent(EventListener::Event evt)override;
 	void start()override;
+	void createNPCArray();
 	void stop()override;
 	TileMap m_TileMap;
 private:

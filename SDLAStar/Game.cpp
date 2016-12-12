@@ -36,6 +36,8 @@ Game::~Game()
 
 bool Game::init() {	
 
+	/* initialize random seed: */
+	srand(time(NULL));
 	//creates our renderer, which looks after drawing and the window
 	m_renderer.init(m_winSize,"A* TileMap implementing Threads");
 
@@ -61,6 +63,10 @@ bool Game::init() {
 	m_inputManager.AddListener(EventListener::Event::DOWN, this);
 	m_inputManager.AddListener(EventListener::Event::LEFT, this);
 	m_inputManager.AddListener(EventListener::Event::RIGHT, this);
+	m_inputManager.AddListener(EventListener::Event::W, this);
+	m_inputManager.AddListener(EventListener::Event::A, this);
+	m_inputManager.AddListener(EventListener::Event::S, this);
+	m_inputManager.AddListener(EventListener::Event::D, this);
 	m_inputManager.AddListener(EventListener::Event::QUIT, this);
 
 	return true;
@@ -86,11 +92,6 @@ void Game::update()
 	float deltaTime = (currentTime - m_lastTime) / 1000.0;//time since last update
 	SceneManager::Instance()->update(deltaTime);
 
-	//call update on all game objects
-	//for (std::vector<GameObject*>::iterator i = m_gameObjects.begin(); i != m_gameObjects.end(); i++) {
-	//	(*i)->Update(deltaTime);
-	//}
-
 	//save the curent time for next frame
 	m_lastTime = currentTime;
 }
@@ -102,11 +103,6 @@ void Game::render()
 	m_renderer.clear(Colour(255,255,255));// prepare for new frame
 	
 	SceneManager::Instance()->render(m_renderer);
-	//render every object
-	//for (std::vector<GameObject*>::iterator i = m_gameObjects.begin(), e= m_gameObjects.end(); i != e; i++) {
-	//	(*i)->Render(m_renderer);
-	//}
-	//
 	fps_frames += 1;
 	if (fps_lastTme < SDL_GetTicks() - 1000)
 	{
@@ -145,12 +141,11 @@ void Game::loop()
 
 void Game::onEvent(EventListener::Event evt) {
 		
+	SceneManager::Instance()->onEvent(evt);
 	if (evt == EventListener::Event::QUIT) {
 		m_quit=true;
 	}
-	if (evt == EventListener::Event::SPACE) {
-		
-	}
+	//Camera Movement
 	if (evt == EventListener::Event::UP) {
 		Camera::Instance()->onEvent(UP);
 	}

@@ -13,17 +13,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Maze">
-      <UniqueIdentifier>{2515ffe9-5a8c-4afc-9779-593418a9a9ea}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Main">
       <UniqueIdentifier>{7954b9fc-4b92-44da-b4bc-c318f2cec5c9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Utilities">
       <UniqueIdentifier>{aae0c7c0-ade6-40a8-828a-49ae4b095f7b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Maze">
-      <UniqueIdentifier>{80952edb-5f8e-4488-817e-877dee73ae91}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Main">
       <UniqueIdentifier>{6192ef6a-8e02-4ef6-abf5-b49b36f696ba}</UniqueIdentifier>
@@ -37,6 +31,18 @@
     <Filter Include="Source Files\Scenes">
       <UniqueIdentifier>{cc12d85e-a415-483d-a31e-06fc6400f7f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\TileMap">
+      <UniqueIdentifier>{80952edb-5f8e-4488-817e-877dee73ae91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\TileMap">
+      <UniqueIdentifier>{2515ffe9-5a8c-4afc-9779-593418a9a9ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObjects">
+      <UniqueIdentifier>{d215c4b3-a774-42fa-914d-a25d5a226d2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects">
+      <UniqueIdentifier>{62129c79-86d5-434e-868e-fce328ea245b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -49,9 +55,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
-      <Filter>Header Files\Main</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
       <Filter>Header Files\Main</Filter>
     </ClInclude>
     <ClInclude Include="BasicTypes.h">
@@ -79,7 +82,7 @@
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Cell.h">
-      <Filter>Header Files\Maze</Filter>
+      <Filter>Header Files\TileMap</Filter>
     </ClInclude>
     <ClInclude Include="SceneId.h">
       <Filter>Header Files\Scenes</Filter>
@@ -94,10 +97,19 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TileMap.h">
-      <Filter>Header Files\Maze</Filter>
+      <Filter>Header Files\TileMap</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="NPC.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="MathsUtil.h">
+      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -123,7 +135,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Cell.cpp">
-      <Filter>Source Files\Maze</Filter>
+      <Filter>Source Files\TileMap</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files\Scenes</Filter>
@@ -138,10 +150,16 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TileMap.cpp">
-      <Filter>Source Files\Maze</Filter>
+      <Filter>Source Files\TileMap</Filter>
+    </ClCompile>
+    <ClCompile Include="MathsUtil.cpp">
+      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="NPC.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
