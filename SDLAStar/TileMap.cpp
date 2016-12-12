@@ -74,6 +74,9 @@ void TileMap::createWalls()
 			}
 		}
 	}
+
+	cout << "Walls Created. Ticks to create Walls :" + to_string(SDL_GetTicks()) << endl;
+	
 }
 
 void TileMap::createWallArray(vector<int>& wallArray, int numberOfWalls)
@@ -115,8 +118,7 @@ bool TileMap::createLevel()
 	}
 	createWalls();
 	createCellNeighbours();
-	//addSpecialWalls();
-	std::cout << "finito" << std::endl;
+	cout << "LEVEL CREATED. Ticks to create level :" + to_string(SDL_GetTicks()) << endl;
 	return true;
 }
 

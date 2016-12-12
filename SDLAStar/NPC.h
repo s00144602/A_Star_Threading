@@ -9,22 +9,24 @@ class NPC: public GameObject
 {
 
 public:
-	NPC(Point startPos, int size, std::map<Point, Cell*> m_cells);
+	NPC(Point startPos, int size);
 	~NPC();
 	float m_size;
 	Point m_pos;
 	Point m_startPos;
 	vector<Cell*> finalPath;
-	std::map<Point, Cell*> m_cells;
 	Cell* m_targetCell;
 	Cell* m_currentCell;
+	//set the currentcheckking tile to be the starting pos of the npc
+	Cell* currentCheckingCell;// = m_cells.at(m_startPos);
 	void update(float deltaTime) override;
 	void resetMaps();
 	void findPath();
 	float getManahattanScore(Point gridPos);
 	void render(Renderer& r) override;
 	//set the target pos of the NPC
-	void setTargetGridPos(Point);
+	void setTargetGridPos(std::map<Point, Cell*>& cells,Point);
+	void setCurrentCheckingTile(std::map<Point, Cell*>& cells);
 private:
 	bool m_pathFound;
 	// Keep track of cells that have been scored and neighbours discovered

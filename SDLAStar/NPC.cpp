@@ -5,11 +5,10 @@
 #include <cmath> 
 #include "MathsUtil.h"
 
-NPC::NPC(Point startPos, int size, std::map<Point, Cell*> cells) :
+NPC::NPC(Point startPos, int size) :
 	m_pathFound(false),
 	m_startPos(startPos),
 	m_pos(startPos),
-	m_cells(cells),
 	m_size(size)
 {
 	cout << "NPC created" << endl;
@@ -45,9 +44,6 @@ void NPC::findPath()
 	{
 		//init the maps 
 		resetMaps();
-
-		//set the currentcheckking tile to be the starting pos of the npc
-		Cell* currentCheckingCell = m_cells.at(m_startPos);
 		
 		//m_targetCell = m_map.at(Point(28, 28));
 		availableCells.insert(make_pair(currentCheckingCell, getManahattanScore(currentCheckingCell->getGridPos())));
@@ -146,6 +142,7 @@ void NPC::findPath()
 			else
 			{
 				Finished = true;
+				cout << "NPC found final path. Ticks to create final path :" + to_string(SDL_GetTicks()) << endl;
 			}
 
 		}
@@ -188,9 +185,18 @@ void NPC::render(Renderer & r)
 	}
 }
 
-void NPC::setTargetGridPos(Point target)
+void NPC::setTargetGridPos(std::map<Point, Cell*>& cells, Point target)
 {
-	m_targetCell = m_cells.at(target);
+	m_targetCell = cells.at(target);
+}
+
+static int test=0;
+void NPC::setCurrentCheckingTile(std::map<Point, Cell*>& cells)
+{
+	test++;
+	cout << "ID" + to_string(test) << endl;
+	cout << "NPC setting currentChecking tile. Ticks to create final path :" + to_string(SDL_GetTicks()) << endl;
+	currentCheckingCell = cells.at(m_startPos);
 }
 
 

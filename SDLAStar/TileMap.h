@@ -11,14 +11,15 @@ using namespace std;
 class TileMap
 {
 protected:
-	//used for rendering the walls
-	vector<Cell *> m_Wallcells;
-
 	// the texture this TileMap is drawn on. the main renderer draws this texture.
 	SDL_Texture *m_texture;
+
 public:
 	TileMap(unsigned int sizeX, unsigned int cellSize);
 	std::map<Point, Cell *> m_cells;
+
+	//used for rendering the walls
+	vector<Cell *> m_Wallcells;// = vector<Cell *>();
 	void createWalls();
 	// the size of this TileMap.
 	unsigned int m_size;

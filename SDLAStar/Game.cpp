@@ -51,13 +51,6 @@ bool Game::init() {
 	m_renderer.setViewPort(m_vpRect);
 	//Add Scenes
 	SceneManager::Instance()->addScene(new GameScene(1));
-
-	//create some game objects
-
-
-	//add some game objects
-	
-
 	//inputManager.AddListener(EventListener::Event::EXAMPLE, EventListener);
 	m_inputManager.AddListener(EventListener::Event::UP, this);
 	m_inputManager.AddListener(EventListener::Event::DOWN, this);

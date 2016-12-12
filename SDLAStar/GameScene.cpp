@@ -37,7 +37,7 @@ void GameScene::update(float p_deltaTime)
 	if(init)
 		for(auto &n : npcs)
 		{
-			n.setTargetGridPos(m_player.m_pos);
+			n.setTargetGridPos(m_TileMap.m_cells,m_player.m_pos);
 			n.update(p_deltaTime);
 		}
 }
@@ -89,11 +89,13 @@ void GameScene::createNPCArray()
 		if (m_TileMap.m_cells.at(Point(x, y))->m_iswall)
 			x++;
 
-		npcs.push_back(
-			NPC(m_TileMap.m_cells.at(Point(x, y))->getGridPos(),
-				Constants::CELL_SIZES[m_id],
-				m_TileMap.m_cells));
+		NPC& npc = NPC(Point(x, y), Constants::CELL_SIZES[m_id]);
+		npc.setCurrentCheckingTile(m_TileMap.m_cells);
+
+		npcs.push_back(npc);
 	}
+	cout << "Ticks to create NPCs :" + to_string(SDL_GetTicks()) << endl;
+	cout << "Npc Created " + to_string(npcArraySize) << endl;
 }
 
 void GameScene::stop()
