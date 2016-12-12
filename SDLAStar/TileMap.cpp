@@ -6,11 +6,13 @@
 #include <omp.h>
 #include <time.h> 
 
+
 TileMap::TileMap(unsigned int size, unsigned int cellSize) :
 	m_size(size),
 	m_cellSize(cellSize)
 {
 	m_numOfCells = m_size / m_cellSize;
+	createLevel();
 }
 
 
@@ -125,9 +127,27 @@ bool TileMap::createLevel()
 		}
 	}
 	createWalls();
+	createCellNeighbours();
 	//addSpecialWalls();
 	std::cout << "finito" << std::endl;
 	return true;
+}
+
+void TileMap::createCellNeighbours()
+{
+
+	for (auto &c : m_cells)
+	{
+		if (c.second->getGridPos().second > 0)
+			c.second->addNeighbor(m_cells[Point(c.second->getGridPos().first, c.second->getGridPos().second - 1)]);
+		if (c.second->getGridPos().second < m_numOfCells - 1)
+			c.second->addNeighbor(m_cells[Point(c.second->getGridPos().first, c.second->getGridPos().second + 1)]);
+		if (c.second->getGridPos().first  > 0)
+			c.second->addNeighbor(m_cells[Point(c.second->getGridPos().first - 1, c.second->getGridPos().second)]);
+		if (c.second->getGridPos().first < m_numOfCells - 1)
+			c.second->addNeighbor(m_cells[Point(c.second->getGridPos().first + 1, c.second->getGridPos().second)]);
+	}
+
 }
 
 std::deque<Cell*> TileMap::aStarSearch(Cell * start, Cell * end)

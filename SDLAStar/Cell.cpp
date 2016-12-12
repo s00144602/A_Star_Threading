@@ -11,11 +11,17 @@ Cell::Cell()
 
 Point Cell::getGridPos()
 {
-	return Point(x/m_size,y/m_size);
+	return m_gridPos;
 }
 
-Cell::Cell(int x, int y, int size, bool isWall) : x(x), y(y), m_size(size), m_iswall(isWall)
+Cell::Cell(int x, int y, int size, bool isWall) :
+	x(x), 
+	y(y),
+	m_size(size), 
+	m_iswall(isWall), 
+	m_gridPos(x / size, y / size)
 {
+	
 	
 }
 
@@ -27,6 +33,8 @@ bool Cell::atPoint(const float& xPos,const float& yPos)
 	}
 	return false;
 }
+
+
 
 void Cell::drawCircle(SDL_Renderer *renderer, SDL_Rect *TileMapRect) const
 {
@@ -47,23 +55,13 @@ void Cell::render(Renderer& renderer, int cellsize) const
 		renderer.drawRect(drawRect, Colour(255, 0, 0, 255));
 }
 
-void Cell::addNeighbor(Cell *neighbor, int direction)
+void Cell::addNeighbor(Cell *neighbor)
 {
-	neighbors[direction] = neighbor;
+	m_neighbors.push_back(neighbor);
 }
 
-
-
-
-
-Cell *Cell::getAttachedNeighbor(unsigned int direction) const
+Point Cell::getPos()
 {
-	auto n = neighbors[direction];
-	for (Cell *c : attachedNeighbors) {
-		if (n == c) {
-			return c;
-		}
-	}
-
-	return nullptr;
+	return Point(x, y);
 }
+

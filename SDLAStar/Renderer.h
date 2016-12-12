@@ -34,6 +34,7 @@ public:
 	void drawRect(const Rect&, const Colour&);
 	void drawWorldRect(const Rect&, const Colour&);
 	void initTTF();
+	void drawCircle(int x0, int y0, int radius, const Colour& c);
 	void drawText(int id, std::string message);
 	void present();
 	void clear(const Colour&);

@@ -105,6 +105,29 @@ void Renderer::initTTF()
 	}
 }
 
+void Renderer::drawCircle(int x0, int y0, int radius, const Colour& c)
+{
+	SDL_SetRenderDrawColor(sdl_renderer, c.r, c.g, c.b, c.a);
+	// Uses the midpoint circle algorithm to draw a filled circle
+	// https://en.wikipedia.org/wiki/Midpoint_circle_algorithm
+	int x = radius;
+	int y = 0;
+	int radiusError = 1 - x;
+	while (x >= y) {
+		SDL_RenderDrawLine(sdl_renderer, x + x0, y + y0, -x + x0, y + y0);
+		SDL_RenderDrawLine(sdl_renderer, y + x0, x + y0, -y + x0, x + y0);
+		SDL_RenderDrawLine(sdl_renderer, -x + x0, -y + y0, x + x0, -y + y0);
+		SDL_RenderDrawLine(sdl_renderer, -y + x0, -x + y0, y + x0, -x + y0);
+		y++;
+		if (radiusError < 0)
+			radiusError += 2 * y + 1;
+		else {
+			x--;
+			radiusError += 2 * (y - x + 1);
+		}
+	}
+}
+
 SDL_Rect renderQuad;
 void Renderer::drawText(int i, string message)
 {
